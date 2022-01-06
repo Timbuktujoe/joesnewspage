@@ -1,0 +1,34 @@
+body {
+  background-color: orange;
+}
+
+.App {
+  font-family: sans-serif;
+  display: flex;
+
+  flex-direction: column;
+  margin: 1em;
+}
+
+.Boxes {
+  display: flex;
+}
+
+.Stories {
+  display: flex;
+  flex-direction: column;
+  margin: 2em;
+  gap: 5px;
+}
+
+li {
+  border: solid black 1px;
+  list-style: none;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: grey;
+}
+
+.Search {
+  margin-top: 2em;
+}
