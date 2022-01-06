@@ -9,7 +9,8 @@ export default function App() {
   const [userInput, setUserInput] = useState("");
   const [stories, setStories] = useState([]);
   const [latestStories, setLatestStories] = useState([]);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
+  const [firstRun, setFirstRun] = useState(true)
 
   useEffect(() => {
     fetch("https://hn.algolia.com/api/v1/search_by_date?tags=story")
@@ -27,8 +28,17 @@ export default function App() {
     fetch("https://hn.algolia.com/api/v1/search?query=" + userInput)
       .then((res) => res.json())
       .then((res) => setStories(res.hits));
-    setLoader(false);
+    // setLoader(false);
   };
+
+  useEffect(() => {
+    // if (firstRun) {
+    //   setFirstRun(false)
+    //   return
+    // }
+    setLoader(false)
+  }, [stories])
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -54,37 +64,36 @@ export default function App() {
           </form>
         </div>
         <div className="Loading">
-          <Loader
+          {loader ? <Loader
             type="ThreeDots"
             color="#FFFFFF"
             height={100}
             width={100}
-            timeout={2000} //3 secs
-          />
-        </div>
-      </div>
-      <div className="Boxes">
-        <div className="Stories">
-          <h2>Latest Stories:</h2>
-          {latestStories.map((story) => (
-            <li>
-              <a href={story.url}>{story.title}</a>
-              <br />
-              Author: {story.author}
-            </li>
-          ))}
-        </div>
+          /> : <div className="Boxes">
+            <div className="Stories">
+              <h2>Latest Stories:</h2>
+              {latestStories.map((story) => (
+                <li>
+                  <a href={story.url}>{story.title}</a>
+                  <br />
+                  Author: {story.author}
+                </li>
+              ))}
+            </div>
 
-        <div className="Stories">
-          <h2>{userInput}</h2>
-          {stories.map((story) => (
-            <li>
-              <a href={story.url}>{story.title}</a>
-              <br /> Author: {story.author} Comments: {story.num_comments}
-            </li>
-          ))}
+            <div className="Stories">
+              <h2>{userInput}</h2>
+              {stories.map((story) => (
+                <li>
+                  <a href={story.url}>{story.title}</a>
+                  <br /> Author: {story.author} Comments: {story.num_comments}
+                </li>
+              ))}
+            </div>
+          </div>}
         </div>
       </div>
+
     </div>
   );
 }
